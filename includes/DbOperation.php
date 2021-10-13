@@ -57,7 +57,6 @@ class DbOperation
 		return false; 
 	}
 	
-	
 	function deleteHero($id){
 		$stmt = $this->con->prepare("DELETE FROM heroes WHERE id = ? ");
 		$stmt->bind_param("i", $id);

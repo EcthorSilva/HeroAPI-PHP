@@ -2,13 +2,17 @@
 
 	require_once '../includes/DbOperation.php';
 
+	// Att
+	parse_str(file_get_contents("php://input"), $_PUT);
+
 	function isTheseParametersAvailable($params){
 	
 		$available = true; 
 		$missingparams = ""; 
 		
 		foreach($params as $param){
-			if(!isset($_POST[$param]) || strlen($_POST[$param])<=0){
+			global $_PUT;
+			if(!isset($_PUT[$param]) || strlen($_PUT[$param])<=0){
 				$available = false; 
 				$missingparams = $missingparams . ", " . $param; 
 			}
@@ -79,17 +83,16 @@
 				$response['heroes'] = $db->getHeroes();
 			break; 
 			
-			
-		
+			// Att
 			case 'updatehero':
 				isTheseParametersAvailable(array('id','name','realname','rating','teamaffiliation'));
 				$db = new DbOperation();
 				$result = $db->updateHero(
-					$_POST['id'],
-					$_POST['name'],
-					$_POST['realname'],
-					$_POST['rating'],
-					$_POST['teamaffiliation']
+					$_PUT['id'],
+					$_PUT['name'],
+					$_PUT['realname'],
+					$_PUT['rating'],
+					$_PUT['teamaffiliation']
 				);
 				
 				if($result){
